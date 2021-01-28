@@ -1,3 +1,5 @@
 # flappy-sechi
 
-python is the BEST
+A python fan game for Sechi.
+
+:D
