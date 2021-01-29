@@ -4,12 +4,15 @@ let ctx
 //if (canvas.getContext) { ctx = canvas.getContext('2d') } else { canvas.remove() }
 
 let Y, Yv, scene
-const main = new Image()
+const main, tukim_high, tukim_mid, tukim_bottom = new Image()
 
 init()
 
 function init(){
   main.src = 'src/sprites/main.png'
+  tukim_high.src = 'src/sprites/tukim_high.png'
+  tukim_mid.src = "src/sprites/tukim_mid.png"
+  tukim_bottom.src = "src/sprites/tukim_bottom.png"
 
   Y = 0
   Yv = 0
