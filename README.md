@@ -1,5 +1,5 @@
 # flappy-sechi
 
-A python fan game for Sechi.
+A html fan game for Sechi.
 
 :D
