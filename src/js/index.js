@@ -3,12 +3,14 @@ let ctx
 
 if (!canvas.getContext) { canvas.remove() }
 
-let Y, Yv, scene, TukimX, TukimY, scoreGiven, score
+let Y, Yv, scene, TukimX, TukimY, scoreGiven, score, window_anim
 const main = new Image()
 const main_fall = new Image()
 const tukim_high = new Image()
 const tukim_mid = new Image()
 const tukim_bottom = new Image()
+const window_ = new Image()
+const logo = new Image()
 
 
 init()
@@ -19,8 +21,10 @@ function init(){
   tukim_high.src = 'src/sprites/tukim_high.png'
   tukim_mid.src = "src/sprites/tukim_mid.png"
   tukim_bottom.src = "src/sprites/tukim_bottom.png"
+  window_.src = "src/sprites/window.png"
+  logo.src = "src/sprites/logo.png"
 
-  scene = 1
+  scene = 0
 
   
 
@@ -28,7 +32,7 @@ function init(){
   setInterval(loop, 20)
 
   let cool = false
-  document.addEventListener('click', function() {
+  document.addEventListener('mousedown', function() {
     switch (scene){
       case 1:{ Yv = -10 }
     }
@@ -43,7 +47,7 @@ function init(){
       
       cool = true
     }
-    if (event.keyCode === 13 && scene === 2) {
+    if (event.keyCode === 13 && scene != 1) {
       scene = 1
       gameStart()
     }
@@ -54,15 +58,20 @@ function init(){
 function gameStart(){
   TukimX = [360, 560, 760]
   TukimY = [Math.floor(Math.random()*290), Math.floor(Math.random()*290), Math.floor(Math.random()*290)]
-  Y = 0
+  Y = 200
   Yv = 0
   scoreGiven = false
   score = 0
+  window_anim = -300
 }
 
 
 function loop(){
   switch (scene) {
+    case 0: {
+      scene0()
+      break
+    }
     case 1: {
       scene1()
       break
@@ -72,6 +81,19 @@ function loop(){
       break
     }
   }
+}
+
+function scene0(){
+  ctx = canvas.getContext('2d')
+
+  ctx.imageSmoothingEnabled = false
+  
+  ctx.clearRect(0,0,360,540)
+  ctx.drawImage(main, 60, 200, 50, 50)
+  ctx.drawImage(logo, 30, 50, 300, 111)
+
+  ctx.font = "30px Arial"
+  ctx.fillText("Press Enter to start...", 40, 400)
 }
 
 
@@ -147,6 +169,21 @@ function scene1(){
   ctx.fillText(score, 170, 100)
 }
 
+
+function drawWindow(posY){
+  ctx.drawImage(window_, 30, posY, 300, 300)
+
+  ctx.fillStyle = "rgb(0,0,0)"
+  ctx.font = "30px Arial"
+  ctx.fillText("U ded", 140, posY+110)
+
+  ctx.font = "20px Arial"
+  ctx.fillText("score: " + score, 150, posY + 150)
+
+  ctx.font = "25px Arial"
+  ctx.fillText("press Enter to restart...", 60, posY + 200)
+}
+
 function scene2(){
   ctx = canvas.getContext('2d')
   ctx.imageSmoothingEnabled = false
@@ -154,6 +191,9 @@ function scene2(){
   //logic
   Yv++
   Y += Yv
+
+  window_anim += 20
+  if (window_anim > 50) {window_anim  = 50}
 
   //draw
   ctx.clearRect(0, 0, 360, 540)
@@ -163,12 +203,6 @@ function scene2(){
   }
 
   ctx.drawImage(main_fall, 60, Y, 50, 50)
-  
-  ctx.fillStyle = "rgb(0,255,255)"
-  ctx.fillRect(140, 240, 100, 40)
 
-  ctx.fillStyle = "rgb(0,0,0)"
-  ctx.font = "30px Arial"
-  ctx.fillText("U ded", 150, 270)
-  ctx.fillText(score, 170, 100)
+  drawWindow(window_anim)  
 }
