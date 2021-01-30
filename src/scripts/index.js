@@ -5,6 +5,7 @@ if (!canvas.getContext) { canvas.remove() }
 
 let Y, Yv, scene, TukimX, TukimY, scoreGiven, score
 const main = new Image()
+const main_fall = new Image()
 const tukim_high = new Image()
 const tukim_mid = new Image()
 const tukim_bottom = new Image()
@@ -14,6 +15,7 @@ init()
 
 function init(){
   main.src = 'src/sprites/main.png'
+  main_fall.src = 'src/sprites/main_fall.png'
   tukim_high.src = 'src/sprites/tukim_high.png'
   tukim_mid.src = "src/sprites/tukim_mid.png"
   tukim_bottom.src = "src/sprites/tukim_bottom.png"
@@ -26,12 +28,24 @@ function init(){
   setInterval(loop, 20)
 
   let cool = false
-  document.addEventListener('click', function() { Yv = -10 })
+  document.addEventListener('click', function() {
+    switch (scene){
+      case 1:{ Yv = -10 }
+    }
+  })
   document.addEventListener('keydown', function(event) {
     if (event.keyCode === 32 || event.keyCode === 38 || event.keyCode === 87) {
       if (cool) return
-      Yv = -10
+      switch (scene){
+        case 1:{Yv = -10}
+        
+      }
+      
       cool = true
+    }
+    if (event.keyCode === 13 && scene === 2) {
+      scene = 1
+      gameStart()
     }
   })
   document.addEventListener('keyup', function(event) { if(event.keyCode === 32 || event.keyCode === 38 || event.keyCode === 87) return cool = false })
@@ -137,11 +151,18 @@ function scene2(){
   ctx = canvas.getContext('2d')
   ctx.imageSmoothingEnabled = false
 
+  //logic
+  Yv++
+  Y += Yv
+
+  //draw
   ctx.clearRect(0, 0, 360, 540)
 
   for (tukim_draw = 0; tukim_draw < 3; tukim_draw++) {
     Tukim(TukimX[tukim_draw], TukimY[tukim_draw])
   }
+
+  ctx.drawImage(main_fall, 60, Y, 50, 50)
   
   ctx.fillStyle = "rgb(0,255,255)"
   ctx.fillRect(140, 240, 100, 40)
@@ -149,4 +170,5 @@ function scene2(){
   ctx.fillStyle = "rgb(0,0,0)"
   ctx.font = "30px Arial"
   ctx.fillText("U ded", 150, 270)
+  ctx.fillText(score, 170, 100)
 }
