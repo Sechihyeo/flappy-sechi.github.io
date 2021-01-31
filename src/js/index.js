@@ -4,6 +4,7 @@ let ctx
 if (!canvas.getContext) { canvas.remove() }
 
 let Y, Yv, scene, TukimX, TukimY, scoreGiven, score, window_anim
+
 const main = new Image()
 const main_fall = new Image()
 const tukim_high = new Image()
@@ -12,6 +13,13 @@ const tukim_bottom = new Image()
 const window_ = new Image()
 const logo = new Image()
 
+const die1 = new Audio("src/sfx/die1.wav")
+const die2 = new Audio("src/sfx/die2.wav")
+const fly1 = new Audio("src/sfx/fly1.wav")
+const fly2 = new Audio("src/sfx/fly2.wav")
+const fly3 = new Audio("src/sfx/fly3.wav")
+
+const audios = []
 
 init()
 
@@ -23,6 +31,12 @@ function init(){
   tukim_bottom.src = "src/sprites/tukim_bottom.png"
   window_.src = "src/sprites/window.png"
   logo.src = "src/sprites/logo.png"
+
+  die1.autoplay = true
+  die2.autoplay = true
+  fly1.autoplay = true
+  fly2.autoplay = true
+  fly3.autoplay = true
 
   scene = 0
 
@@ -41,10 +55,11 @@ function init(){
     if (event.keyCode === 32 || event.keyCode === 38 || event.keyCode === 87) {
       if (cool) return
       switch (scene){
-        case 1:{Yv = -10}
+        case 1:{Yv = -10; let i = Math.floor(Math.random()*3) + 1; setTimeout("fly" + i + ".pause(); fly" + i + ".currentTime = 0; fly" + i + ".play()", 0)}
         
       }
       
+
       cool = true
     }
     if (event.keyCode === 13 && scene != 1) {
@@ -129,7 +144,7 @@ function scene1(){
   Y += Yv
   Yv += 1
 
-  if (Y >= 490 || Y < 0) { scene = 2 }
+  if (Y >= 490 || Y < 0) { scene = 2; die2.play()}
 
   for (tukim_logic = 0; tukim_logic < 3; tukim_logic++){
     if (TukimX[tukim_logic] < -250){
@@ -144,6 +159,7 @@ function scene1(){
       if (Y < TukimY[tukim_collision] + 50 || Y > TukimY[tukim_collision] + 135){
         scene = 2
         Yv = 0
+        die1.play()
       }
       else{
         if (score == 1 && tukim_collision == 1) {score = 2}
