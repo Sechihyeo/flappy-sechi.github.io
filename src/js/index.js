@@ -44,7 +44,7 @@ function init(){
   let cool = false
   document.addEventListener('mousedown', function() {
     switch (scene){
-      case 1:{ Yv = -10 }
+      case 1:{ Yv = -10; let i = Math.floor(Math.random()*3) + 1; setTimeout("fly" + i + ".pause(); fly" + i + ".currentTime = 0; fly" + i + ".play()", 0)}
     }
   })
   document.addEventListener('keydown', function(event) {
