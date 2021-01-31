@@ -18,6 +18,7 @@ const die2 = new Audio("src/sfx/die2.wav")
 const fly1 = new Audio("src/sfx/fly1.wav")
 const fly2 = new Audio("src/sfx/fly2.wav")
 const fly3 = new Audio("src/sfx/fly3.wav")
+const point = new Audio("src/sfx/point.wav")
 
 const audios = []
 
@@ -31,12 +32,7 @@ function init(){
   tukim_bottom.src = "src/sprites/tukim_bottom.png"
   window_.src = "src/sprites/window.png"
   logo.src = "src/sprites/logo.png"
-
-  die1.autoplay = true
-  die2.autoplay = true
-  fly1.autoplay = true
-  fly2.autoplay = true
-  fly3.autoplay = true
+  
 
   scene = 0
 
@@ -162,10 +158,18 @@ function scene1(){
         die1.play()
       }
       else{
-        if (score == 1 && tukim_collision == 1) {score = 2}
+        if (score == 1 && tukim_collision == 1) {
+          score = 2
+          point.pause()
+          point.currentTime = 0
+          point.play()
+        }
         if (!scoreGiven){
           score ++
           scoreGiven = true
+          point.pause()
+          point.currentTime = 0
+          point.play()
         }
         
       }
