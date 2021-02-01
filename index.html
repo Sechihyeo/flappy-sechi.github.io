@@ -5,20 +5,29 @@
         <title>Flappy Sechi</title>
 
         <style>
-            canvas{border:1px solid black;}
             @font-face {
                 font-family: 'DungGeunMo';
                 src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/DungGeunMo.woff') format('woff');
                 font-weight: normal;
                 font-style: normal;
-}
+            }
+            body {
+                display: grid;
+                grid-template-rows: auto;
+                justify-items: center;
+                align-items: center;
+            }
+            canvas{
+                display: block;
+                padding-top: 100px;
+            }
         </style>
 
         
     </head>
 
     <body>
-        <canvas id="canvas" width="360" height="540"></canvas>
+        <canvas id="canvas" width="360" height="540"></canvas>       
     </body>
 
     <script type="text/javascript" src = "src/js/index.js"></script>
