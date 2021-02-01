@@ -3,7 +3,7 @@ let ctx
 
 if (!canvas.getContext) { canvas.remove() }
 
-let Y, Yv, scene, TukimX, TukimY, scoreGiven, score, window_anim
+let Y, Yv, scene, TukimX, TukimY, scoreGiven, score, window_anim, background_scroll
 
 const main = new Image()
 const main_fall = new Image()
@@ -12,6 +12,8 @@ const tukim_mid = new Image()
 const tukim_bottom = new Image()
 const window_ = new Image()
 const logo = new Image()
+const background = new Image()
+const background_invert = new Image()
 
 const die1 = new Audio("src/sfx/die1.wav")
 const die2 = new Audio("src/sfx/die2.wav")
@@ -32,11 +34,12 @@ function init(){
   tukim_bottom.src = "src/sprites/tukim_bottom.png"
   window_.src = "src/sprites/window.png"
   logo.src = "src/sprites/logo.png"
+  background.src = "src/sprites/background.png"
+  background_invert.src = "src/sprites/background-invert.png"
   
 
   scene = 0
-
-  
+  background_scroll = [0, 360]
 
   gameStart()
   setInterval(loop, 20)
@@ -76,6 +79,23 @@ function gameStart(){
   window_anim = -300
 }
 
+function drawText(msg, x, y, size, stroke){
+  ctx.font = size + "px DungGeunMo"
+  ctx.fillStyle = "rgb(0, 0, 0)"
+  ctx.fillText(msg, x+stroke, y+stroke)
+
+  ctx.fillStyle = "rgb(255, 255, 255)"
+  ctx.fillText(msg, x, y)
+}
+function drawBackground(){
+  ctx.clearRect(0,0,360,540)
+  for (i = 0; i < 2; i++){
+    if (background_scroll[i] === -360) {background_scroll[i] = 360-2}
+    else if (scene != 2) {background_scroll[i]-=1}
+  }
+  ctx.drawImage(background, background_scroll[0], 0, 360, 540)
+  ctx.drawImage(background_invert, background_scroll[1], 0, 360, 540)
+}
 
 function loop(){
   switch (scene) {
@@ -99,12 +119,11 @@ function scene0(){
 
   ctx.imageSmoothingEnabled = false
   
-  ctx.clearRect(0,0,360,540)
+  drawBackground()
   ctx.drawImage(main, 60, 200, 50, 50)
   ctx.drawImage(logo, 30, 50, 300, 111)
 
-  ctx.font = "30px Arial"
-  ctx.fillText("Press Enter to start...", 40, 400)
+  drawText("Press Enter to start...", 10, 400, 30,2)
 }
 
 
@@ -178,30 +197,25 @@ function scene1(){
 
   //draw
   
-  ctx.clearRect(0, 0, 360, 540)
+  drawBackground()
   ctx.drawImage(main, 60, Y, 50, 50)
 
   for (tukim_draw = 0; tukim_draw < 3; tukim_draw++) {
     Tukim(TukimX[tukim_draw], TukimY[tukim_draw])
   }
   
-  ctx.font = "30px Arial"
-  ctx.fillText(score, 170, 100)
+  drawText(score, 170, 100, 50, 4)
 }
 
 
 function drawWindow(posY){
   ctx.drawImage(window_, 30, posY, 300, 300)
 
-  ctx.fillStyle = "rgb(0,0,0)"
-  ctx.font = "30px Arial"
-  ctx.fillText("U ded", 140, posY+110)
+  drawText("U ded", 130, posY+110, 40, 4)
 
-  ctx.font = "20px Arial"
-  ctx.fillText("score: " + score, 150, posY + 150)
+  drawText("score: " + score, 115, posY+150, 35, 3)
 
-  ctx.font = "25px Arial"
-  ctx.fillText("press Enter to restart...", 60, posY + 200)
+  drawText("Press Enter to RESTART", 60, posY + 200, 20, 3)
 }
 
 function scene2(){
@@ -216,7 +230,7 @@ function scene2(){
   if (window_anim > 50) {window_anim  = 50}
 
   //draw
-  ctx.clearRect(0, 0, 360, 540)
+  drawBackground()
 
   for (tukim_draw = 0; tukim_draw < 3; tukim_draw++) {
     Tukim(TukimX[tukim_draw], TukimY[tukim_draw])
